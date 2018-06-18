@@ -58,14 +58,19 @@ def checkclientpolicy(netid, clientid):
         policy = meraki.getclientpolicy(apikey, netid, clientInfo['mac'], timestamp=1200, suppressprint=True)
         print('\t\t\t\tPolicy: ', policy['type'])
         #TODO: Test based on SSID
-        #if clientInfo['ssid'] == ssid-to-test
+        #if clientInfo['ssid'] == ssid-to-test:
+        #   do-the-thing
         #TODO: currently the policy is blocking per SSID - and the return value from the tesing is as follows
         # "Different policies by SSID"
+        # want more granularity in the return, in case an SSID is whitelisted, or a different SSID is blocked
         if policy['type'] in ('Blocked', 'blocked', 'Different policies by SSID'):
             if 'OS X' in clientInfo['os']:
                 print('!!! Blocked client detected !!!')
                 meraki.updateclientpolicy(apikey, netid, clientInfo['mac'], 'normal', policyid=None, suppressprint=True)
-            #TODO: add Windows and other OS support via CLI flags
+            elif 'Windows' in clientInfo['os']:
+                if 'Phone' not in clientInfo['os']:
+                    print('!!! Blocked client detected !!!')
+                    meraki.updateclientpolicy(apikey, netid, clientInfo['mac'], 'normal', policyid=None, suppressprint=True)
     except:
         print('Unable to check client policy')
         #TODO: understand why some clients can't be read
