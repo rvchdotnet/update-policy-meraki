@@ -43,7 +43,7 @@ def getclientinfo(netid, clientid, suppressprint=True):
 def checkclientpolicy(netid, clientid):
     """
     Func:
-        Checks a client for Blocked policy. If blocked, check the OS.
+        Checks a client for a Custom policy per SSID. If set, check the OS.
         If the OS should not be blocked, unblock the policy.
     Args:
         netid: Network that the client is in
@@ -60,10 +60,8 @@ def checkclientpolicy(netid, clientid):
         #TODO: Test based on SSID
         #if clientInfo['ssid'] == ssid-to-test:
         #   do-the-thing
-        #TODO: currently the policy is blocking per SSID - and the return value from the tesing is as follows
-        # "Different policies by SSID"
-        # want more granularity in the return, in case an SSID is whitelisted, or a different SSID is blocked
-        if policy['type'] in ('Blocked', 'blocked', 'Different policies by SSID'):
+        # "Different policies by SSID" - want more granularity in the return, in case an SSID is whitelisted, or a different SSID is blocked
+        if policy['type'] in ('Different policies by SSID'):
             if 'OS X' in clientInfo['os']:
                 print('!!! Blocked client detected !!!')
                 meraki.updateclientpolicy(apikey, netid, clientInfo['mac'], 'normal', policyid=None, suppressprint=True)
