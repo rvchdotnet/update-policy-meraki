@@ -98,7 +98,6 @@ else:
 
 
 #Takes a hard-coded network ID - needs to be of type N_ or L_
-#getnetworks(apikey)
 
 if len(sys.argv) == 2:
     print('No network passed, assuming all networks in all organisations')
